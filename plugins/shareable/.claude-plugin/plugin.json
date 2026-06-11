@@ -1,0 +1,9 @@
+{
+  "name": "shareable",
+  "version": "0.1.0",
+  "description": "Upload an HTML plan/brief and get a shareable URL with inline, text-anchored comments for teammate review.",
+  "author": {
+    "name": "Clark Dinnison"
+  },
+  "keywords": ["review", "collaboration", "html", "comments", "cloudflare"]
+}

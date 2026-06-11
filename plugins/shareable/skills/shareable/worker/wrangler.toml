@@ -1,0 +1,17 @@
+name = "shareable"
+main = "src/index.ts"
+compatibility_date = "2025-01-15"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "shareable-html"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "7c54257ab33a4ea99b589edd42c82833"
+
+# UPLOAD_TOKEN is set via: wrangler secret put UPLOAD_TOKEN

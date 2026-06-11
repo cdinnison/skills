@@ -1,0 +1,23 @@
+{
+  "name": "skills",
+  "owner": {
+    "name": "Clark Dinnison",
+    "url": "https://github.com/cdinnison"
+  },
+  "metadata": {
+    "description": "Clark's personal Claude Code skills.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "shareable",
+      "description": "Upload an HTML plan/brief and get a shareable URL with inline, text-anchored comments for teammate review.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Clark Dinnison"
+      },
+      "tags": ["review", "collaboration", "html", "comments", "cloudflare"],
+      "source": "./plugins/shareable"
+    }
+  ]
+}
