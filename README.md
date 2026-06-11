@@ -62,6 +62,36 @@ cat ~/.config/shareable/config.json   # send the workerUrl + uploadToken
 To rotate the upload token, re-run the skill's `scripts/setup.py` (mints a fresh
 token, updates your config, redeploys) and re-share — existing links keep working.
 
+## Using shareable
+
+Once installed and configured (steps above), the flow is:
+
+1. **Make a review link.** Point it at any HTML file:
+   ```
+   /shareable path/to/plan.html
+   ```
+   Or just ask Claude in plain English — *"share this HTML for review"* — and it
+   runs the skill for you. You get back a URL (also copied to your clipboard);
+   paste it in Slack.
+2. **Reviewers open the link and comment.** They highlight any text on the page
+   and leave a comment anchored to that selection — no login or account needed
+   (the first comment just asks for a name). Threads show up inline.
+3. **Revise in place.** Re-run `/shareable` on the *same file* and it uploads a
+   new version under the **same URL**, so the link you already shared stays live
+   and comment threads carry over. Add `--new` to fork a separate review thread
+   instead:
+   ```
+   /shareable path/to/plan.html --new
+   ```
+
+Good to know:
+- **HTML only, ≤ 5 MB.** Convert Markdown to HTML first.
+- **Unguessable, not access-controlled.** Every page is `noindex` and the URL has
+  ~72 bits of entropy, so search engines won't find it — but anyone with the link
+  can read and comment. Don't share links for compliance-sensitive material.
+- **Pairs well with plan output.** Generate a long HTML plan/brief with Claude,
+  then `/shareable` it to collect feedback without copy-pasting into a doc.
+
 ## Skills
 
 | Skill | What it does | Notes |
