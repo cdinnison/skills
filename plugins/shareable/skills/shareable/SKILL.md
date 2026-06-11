@@ -16,13 +16,17 @@ Same URL across revisions (version history kept).
 
 ## How to invoke
 
-Run the script with the absolute path to the HTML file:
+Run this skill's `scripts/shareable.py` with the absolute path to the HTML file.
+The script sits in the `scripts/` directory next to this SKILL.md — resolve it
+relative to wherever the skill is installed:
 
 ```bash
+# Installed as a plugin (the usual case for teammates):
+python "${CLAUDE_PLUGIN_ROOT}/skills/shareable/scripts/shareable.py" <file.html>
+
+# Cloned/symlinked manually instead:
 python ~/.claude/skills/shareable/scripts/shareable.py <file.html>
 ```
-
-(Adjust the path to wherever the skill is installed.)
 
 The script:
 1. Reads `~/.config/shareable/config.json` for the worker URL + upload token.
@@ -33,8 +37,12 @@ The script:
 
 ## Setup (one-time per machine)
 
+Most teammates do **not** run this — they connect to the shared backend via
+`TEAMMATES.md` instead. Only run setup to self-host your own isolated backend:
+
 ```bash
-python ~/.claude/skills/shareable/scripts/setup.py
+python "${CLAUDE_PLUGIN_ROOT}/skills/shareable/scripts/setup.py"   # plugin install
+python ~/.claude/skills/shareable/scripts/setup.py                 # manual install
 ```
 
 Requires:

@@ -4,18 +4,37 @@ Clark's personal [Claude Code](https://claude.com/claude-code) skills, packaged
 as a plugin marketplace so teammates can install them by name and get updates
 with a `git pull`.
 
-## Install (teammates)
+## Install — never used GitHub? Start here
 
-Add the marketplace once, then install whatever you want:
+You don't need to know anything about GitHub, git, or the command line. You do
+need the **Claude Code desktop app** (or the terminal CLI). The **web version at
+claude.ai/code can't install skills** — plugins only work in the desktop app,
+the CLI, and the VS Code / JetBrains extensions.
 
-```
-/plugin marketplace add cdinnison/skills
-/plugin install shareable@skills
-```
+1. **Get Claude Code.** Download the desktop app from
+   [claude.com/claude-code](https://claude.com/claude-code) and sign in. (Already
+   use it in the terminal? That's fine too.)
+2. **Open Claude Code** and, in the message box, paste this and press enter:
+   ```
+   /plugin marketplace add cdinnison/skills
+   ```
+3. Then paste this and press enter:
+   ```
+   /plugin install shareable@skills
+   ```
 
-Update later with `/plugin marketplace update skills`.
+That's the whole install. The two lines above are the only commands — you type
+them into Claude exactly as written. You can't ask Claude in plain English to
+"install the skill" for you; it has to be these `/plugin` lines.
 
-> Prefer not to use the plugin system? Each skill is a plain folder under
+**Hit a permission or "repository not found" error?** This repo is private, so
+Claude needs access to it. Easiest fix: ask Clark to make the repo public (the
+code has no secrets). Otherwise sign in with `gh auth login` first, using a
+GitHub account Clark has added to the repo.
+
+**Updating later:** `/plugin marketplace update skills`, then reinstall.
+
+> Comfortable with git and skipping plugins? Each skill is a plain folder under
 > `plugins/<name>/skills/<name>/` — clone this repo and copy or symlink the
 > folder into `~/.claude/skills/`.
 

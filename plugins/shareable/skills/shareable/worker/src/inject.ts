@@ -5,8 +5,8 @@ export function injectOverlay(
   slug: string,
   version: number,
   docTitle: string,
+  origin: string,
 ): Response {
-  const origin = "https://shareable.cdinnison.workers.dev";
   const displayTitle = (docTitle && docTitle.trim()) || "Untitled";
   const fullTitle = `${displayTitle}${BRAND_SUFFIX}`;
   const ogUrl = `${origin}/${slug}`;
@@ -25,6 +25,7 @@ export function injectOverlay(
       element(el) {
         el.append(
           [
+            `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">`,
             `<link rel="icon" href="/_/favicon.svg" type="image/svg+xml">`,
             `<link rel="stylesheet" href="/_/overlay.css">`,
             `<meta property="og:title" content="${escapeAttr(fullTitle)}">`,

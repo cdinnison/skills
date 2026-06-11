@@ -38,10 +38,22 @@ export default {
 
       const slugMatch = pathname.match(/^\/([a-z0-9]+)\/?$/);
       if (slugMatch && req.method === "GET" && isValidSlug(slugMatch[1])) {
-        return await handleServeShareable(slugMatch[1], env);
+        return await handleServeShareable(slugMatch[1], env, url.origin);
       }
 
-      return env.ASSETS.fetch(req);
+      if (pathname === "/robots.txt") {
+        // Disallow every crawler. These docs are private-by-URL, not for indexing.
+        return new Response("User-agent: *\nDisallow: /\n", {
+          headers: { "Content-Type": "text/plain; charset=utf-8", ...NOINDEX },
+        });
+      }
+
+      // Static assets (landing page, overlay JS/CSS). Stamp noindex on every one
+      // so nothing served by this worker is ever indexable.
+      const assetResp = await env.ASSETS.fetch(req);
+      const out = new Response(assetResp.body, assetResp);
+      for (const [k, v] of Object.entries(NOINDEX)) out.headers.set(k, v);
+      return out;
     } catch (err) {
       console.error(err);
       return json({ error: "internal" }, 500);
@@ -109,7 +121,7 @@ async function handleUpload(req: Request, env: Env): Promise<Response> {
   return json(body);
 }
 
-async function handleServeShareable(slug: string, env: Env): Promise<Response> {
+async function handleServeShareable(slug: string, env: Env, origin: string): Promise<Response> {
   const versions = await env.KV.get<Version[]>(`versions:${slug}`, "json");
   if (!versions || versions.length === 0) return notFound();
   const latest = versions[versions.length - 1].v;
@@ -126,7 +138,7 @@ async function handleServeShareable(slug: string, env: Env): Promise<Response> {
     const baseResp = new Response(html, {
       headers: { "Content-Type": "text/html; charset=utf-8", ...NOINDEX },
     });
-    return injectOverlay(baseResp, slug, latest, title);
+    return injectOverlay(baseResp, slug, latest, title, origin);
   }
 
   const baseResp = new Response(obj.body, {
@@ -136,7 +148,7 @@ async function handleServeShareable(slug: string, env: Env): Promise<Response> {
     },
   });
 
-  return injectOverlay(baseResp, slug, latest, title);
+  return injectOverlay(baseResp, slug, latest, title, origin);
 }
 
 async function handleOgImage(
@@ -160,7 +172,7 @@ async function handleOgImage(
     await env.KV.put(`title:${slug}`, title);
   }
 
-  const resp = await renderOgImage(title || "Untitled", slug);
+  const resp = await renderOgImage(title || "Untitled", slug, new URL(req.url).host);
   resp.headers.set("Cache-Control", "public, max-age=3600, s-maxage=86400");
   resp.headers.set("X-Robots-Tag", "noindex, nofollow");
   ctx.waitUntil(cache.put(req, resp.clone()));

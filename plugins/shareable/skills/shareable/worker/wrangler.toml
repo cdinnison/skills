@@ -12,6 +12,6 @@ bucket_name = "shareable-html"
 
 [[kv_namespaces]]
 binding = "KV"
-id = "7c54257ab33a4ea99b589edd42c82833"
+id = "a7c4f3bc1c2f474b9bc78291c88aa447"
 
 # UPLOAD_TOKEN is set via: wrangler secret put UPLOAD_TOKEN

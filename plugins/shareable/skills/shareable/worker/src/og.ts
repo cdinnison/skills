@@ -19,7 +19,7 @@ async function loadFonts() {
   return { regular: interRegular, bold: interBold };
 }
 
-export async function renderOgImage(title: string, slug: string): Promise<Response> {
+export async function renderOgImage(title: string, slug: string, host: string): Promise<Response> {
   const fonts = await loadFonts();
   const safe = escapeHtml(title);
   const shortSlug = slug.slice(0, 8);
@@ -39,7 +39,7 @@ export async function renderOgImage(title: string, slug: string): Promise<Respon
   </div>
 
   <div style="display:flex; justify-content:space-between; align-items:center;">
-    <div style="display:flex; font-size:20px; color:${MUTED}; font-family:Inter;">shareable.cdinnison.workers.dev</div>
+    <div style="display:flex; font-size:20px; color:${MUTED}; font-family:Inter;">${host}</div>
     <div style="display:flex; background:${ACCENT_SOFT}; color:${FG}; font-size:18px; padding:8px 14px; border-radius:8px; letter-spacing:0.04em;">${shortSlug}</div>
   </div>
 </div>`;
