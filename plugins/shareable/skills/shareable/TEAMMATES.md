@@ -23,20 +23,21 @@ prefer; see the repo README.)
 
 ## 2. Write your config
 
-Get the **upload token** from Clark (Slack / 1Password — it is not in the repo).
-Then create `~/.config/shareable/config.json`:
+Get the **worker URL and upload token** from Clark (Slack / 1Password — neither
+is in the repo, so the production endpoint isn't advertised publicly). Then create
+`~/.config/shareable/config.json`:
 
 ```bash
 mkdir -p ~/.config/shareable
 cat > ~/.config/shareable/config.json <<'JSON'
 {
-  "workerUrl": "https://shareable.REDACTED-SUBDOMAIN.workers.dev",
+  "workerUrl": "PASTE_WORKER_URL_FROM_CLARK",
   "uploadToken": "PASTE_TOKEN_FROM_CLARK"
 }
 JSON
 ```
 
-That's it — the `workerUrl` is the shared backend; only the token is secret.
+That's it — both values come from Clark and stay on your machine.
 
 ## 3. Use it
 
@@ -44,8 +45,7 @@ That's it — the `workerUrl` is the shared backend; only the token is secret.
 /shareable my-plan.html
 ```
 
-You'll get back a URL like `https://shareable.REDACTED-SUBDOMAIN.workers.dev/<slug>`.
-Paste it in Slack. Re-running on the same file bumps the version under the same
+You'll get back a share URL (your worker's domain + a random slug). Paste it in Slack. Re-running on the same file bumps the version under the same
 URL; pass `--new` to fork a fresh thread.
 
 ## Notes

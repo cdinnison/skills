@@ -23,15 +23,14 @@ the CLI, and the VS Code / JetBrains extensions.
    /plugin install shareable@skills
    ```
 
-4. **Connect to the shared backend.** Ask Clark for your **upload token** (he'll
-   send you a short string over Slack/1Password). Then just tell Claude, in the
-   same chat:
+4. **Connect to the shared backend.** Ask Clark for the **worker URL and upload
+   token** (he'll send both over Slack/1Password — they're deliberately kept out
+   of this repo). Then just tell Claude, in the same chat:
    ```
-   Create my shareable config with this token: <paste-the-token-from-clark>
+   Create my shareable config — worker URL <paste-url> and token <paste-token>
    ```
-   Claude writes `~/.config/shareable/config.json` for you (the worker URL is
-   already public — only the token is secret). Prefer to do it by hand? The exact
-   file is in [TEAMMATES.md](plugins/shareable/skills/shareable/TEAMMATES.md).
+   Claude writes `~/.config/shareable/config.json` for you. Prefer to do it by
+   hand? The exact file is in [TEAMMATES.md](plugins/shareable/skills/shareable/TEAMMATES.md).
 
 That's it — now `/shareable my-plan.html` gives you a review link to paste in Slack.
 
@@ -46,18 +45,22 @@ That's it — now `/shareable my-plan.html` gives you a review link to paste in 
 > `plugins/<name>/skills/<name>/` — clone this repo and copy or symlink the
 > folder into `~/.claude/skills/`.
 
-## Handing out the token (admin — Clark)
+## Onboarding a teammate (admin — Clark)
 
-Teammates need the shared **upload token** — not the Cloudflare deploy token. It's
-already on your machine from setup; read it and send the `uploadToken` value:
+Send the teammate **both** values from your own config — they're kept out of the
+repo on purpose, so the production endpoint isn't advertised publicly:
 
 ```bash
-cat ~/.config/shareable/config.json
+cat ~/.config/shareable/config.json   # send the workerUrl + uploadToken
 ```
 
-Anyone with that token can upload to the shared backend, so keep it to the team. To
-rotate it, re-run the skill's `scripts/setup.py` (mints a fresh token, updates your
-own config, redeploys) and re-share the new value — existing links keep working.
+- `workerUrl` — not secret, but don't publish it; keeps the prod endpoint off the
+  public internet's radar.
+- `uploadToken` — anyone with it can upload to the shared backend. Keep it to the
+  team. (This is **not** the Cloudflare deploy token, which never leaves your machine.)
+
+To rotate the upload token, re-run the skill's `scripts/setup.py` (mints a fresh
+token, updates your config, redeploys) and re-share — existing links keep working.
 
 ## Skills
 
