@@ -23,20 +23,41 @@ the CLI, and the VS Code / JetBrains extensions.
    /plugin install shareable@skills
    ```
 
-That's the whole install. The two lines above are the only commands — you type
-them into Claude exactly as written. You can't ask Claude in plain English to
-"install the skill" for you; it has to be these `/plugin` lines.
+4. **Connect to the shared backend.** Ask Clark for your **upload token** (he'll
+   send you a short string over Slack/1Password). Then just tell Claude, in the
+   same chat:
+   ```
+   Create my shareable config with this token: <paste-the-token-from-clark>
+   ```
+   Claude writes `~/.config/shareable/config.json` for you (the worker URL is
+   already public — only the token is secret). Prefer to do it by hand? The exact
+   file is in [TEAMMATES.md](plugins/shareable/skills/shareable/TEAMMATES.md).
 
-**Hit a permission or "repository not found" error?** This repo is private, so
-Claude needs access to it. Easiest fix: ask Clark to make the repo public (the
-code has no secrets). Otherwise sign in with `gh auth login` first, using a
-GitHub account Clark has added to the repo.
+That's it — now `/shareable my-plan.html` gives you a review link to paste in Slack.
+
+> The two `/plugin` lines in steps 2–3 are the only things you must type exactly.
+> Everything else (step 4, using the skill) you can just ask Claude for in plain
+> English. **"Repository not found"?** Re-run the step-2 line — the repo is public,
+> so no GitHub login is needed.
 
 **Updating later:** `/plugin marketplace update skills`, then reinstall.
 
 > Comfortable with git and skipping plugins? Each skill is a plain folder under
 > `plugins/<name>/skills/<name>/` — clone this repo and copy or symlink the
 > folder into `~/.claude/skills/`.
+
+## Handing out the token (admin — Clark)
+
+Teammates need the shared **upload token** — not the Cloudflare deploy token. It's
+already on your machine from setup; read it and send the `uploadToken` value:
+
+```bash
+cat ~/.config/shareable/config.json
+```
+
+Anyone with that token can upload to the shared backend, so keep it to the team. To
+rotate it, re-run the skill's `scripts/setup.py` (mints a fresh token, updates your
+own config, redeploys) and re-share the new value — existing links keep working.
 
 ## Skills
 
